@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Knowledge Base Management</title>
+  <link rel="stylesheet" href="/static/css/knowledge-base.css?v=1.3"/>
+  <link rel="icon" type="image/png" href="/static/images/forte-logo.png">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="sidebar-header" id="sidebarHome" style="cursor: pointer;" title="Go to Home View">
+        <h1>Knowledge Base</h1>
+        <p>Manage your content</p>
+      </div>
+
+      <div class="search-box">
+        <input type="text" class="search-input" id="sidebarSearch" placeholder="Search categories..." autocomplete="off">
+        <button type="button" class="add-category-btn" id="openCategoryModalBtn">
+          + Add Category
+        </button>
+      </div>
+
+      <div class="categories-list" id="categoriesList">
+        </div>
+
+      </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <div class="main-header-left">
+          <button type="button" class="btn-ghost" id="homeBtn" style="display:none">← All files</button>
+          <div>
+            <h2 class="main-title" id="mainTitle">All Files</h2>
+            <p class="main-subtitle" id="mainSubtitle">Select a file to edit or search across all content</p>
+          </div>
+        </div>
+        <button type="button" class="add-text-btn" id="addTextBtn" disabled>+ Add Question</button>
+      </header>
+
+      <div class="stats" id="statsSection" style="display: none;">
+        <div class="stat-card">
+          <div class="stat-number" id="totalTexts">0</div>
+          <div class="stat-label">Total Entries</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="currentPage">1</div>
+          <div class="stat-label">Current Page</div>
+        </div>
+
+        <div class="filter-group">
+          <label for="pageSizeSelect" style="margin: 0; font-weight: bold;">Show:</label>
+          <select class="form-select" id="pageSizeSelect">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="main-search" id="mainSearchSection">
+        <input type="text" class="search-input" id="mainSearch" placeholder="Search questions and answers..." autocomplete="off">
+      </div>
+
+      <div class="home-grid" id="homeGrid" style="display: none;">
+        </div>
+
+      <div class="text-entries" id="textEntries" style="display: none;">
+        </div>
+
+      <div class="pagination" id="pagination" style="display: none;">
+        </div>
+    </main>
+  </div>
+
+  <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal" id="categoryModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="categoryModalTitle">Add New Category</h3>
+        <p class="modal-subtitle">Create a new category to organize your files</p>
+      </div>
+      <form id="categoryForm">
+        <div class="form-group">
+          <label class="form-label" for="categoryName">Category Name</label>
+          <input type="text" class="form-input" id="categoryName" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" data-close="categoryModal">Cancel</button>
+          <button type="submit" class="btn-submit">Create Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="fileModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="fileModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="fileModalTitle">Add New File</h3>
+        <p class="modal-subtitle">Create a new file in the selected category</p>
+      </div>
+      <form id="fileForm">
+        <div class="form-group">
+          <label class="form-label" for="fileName">File Name</label>
+          <input type="text" class="form-input" id="fileName" required>
+        </div>
+        <input type="hidden" id="fileCategoryId">
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" data-close="fileModal">Cancel</button>
+          <button type="submit" class="btn-submit">Create File</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="textModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="textModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="textModalTitle">Add New Question</h3>
+        <p class="modal-subtitle" id="textModalSubtitle">Create a new Q&A entry</p>
+      </div>
+      <form id="textForm">
+        <div class="form-group">
+          <label class="form-label" for="textQuestion">Question</label>
+          <textarea class="form-input form-textarea" id="textQuestion" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="textAnswer">Answer</label>
+          <textarea class="form-input form-textarea" id="textAnswer" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="textAuthor">Author</label>
+          <input type="text" class="form-input" id="textAuthor" required>
+        </div>
+        <input type="hidden" id="textFileId">
+        <input type="hidden" id="editingTextId">
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" data-close="textModal">Cancel</button>
+          <button type="submit" class="btn-submit" id="textSubmitBtn">Create Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="deleteConfirmModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="deleteModalTitle">Confirm Deletion</h3>
+        <p class="modal-subtitle" id="deleteModalMessage">Are you sure?</p>
+      </div>
+      <form id="deleteConfirmForm">
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" data-close="deleteConfirmModal">Cancel</button>
+          <button type="submit" class="btn-submit btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/knowledge-base.js?v=1.3"></script>
+</body>
+</html>

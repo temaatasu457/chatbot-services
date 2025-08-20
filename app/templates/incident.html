@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMS</title>
+    <link rel="stylesheet" href="/static/css/incident-styles.css?v=1.1">
+    <link rel="icon" type="image/png" href="/static/images/forte-logo.png">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Incident Management System</h1>
+            <button id="createBtn" class="btn btn-primary">Создать инцидент</button>
+        </header>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Загрузка...</p>
+        </div>
+
+        <div id="errorMessage" class="error-message hidden">
+            <span class="error-text"></span>
+            <button class="error-close">&times;</button>
+        </div>
+
+        <div id="successMessage" class="success-message hidden">
+            <span class="success-text"></span>
+            <button class="success-close">&times;</button>
+        </div>
+
+        <div class="incidents-section">
+            <h2>Все инциденты</h2>
+            <div id="incidentsList" class="incidents-list">
+            </div>
+        </div>
+
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Создать новый инцидент</h3>
+                    <button id="closeModal" class="close-btn">&times;</button>
+                </div>
+                <form id="incidentForm" class="modal-body">
+                    <input type="hidden" id="incidentId">
+                    
+                    <div class="form-group">
+                        <label for="incidentName">Что недоступно *</label>
+                        <input type="text" id="incidentName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incidentDescription">Какие операции недоступны *</label>
+                        <textarea id="incidentDescription" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incidentScript">Скрипт ответа *</label>
+                        <textarea id="incidentScript" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Время начала *</label>
+                            <input type="datetime-local" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">Время окончания *</label>
+                            <input type="datetime-local" id="endDate" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">Отмена</button>
+                        <button type="submit" id="submitBtn" class="btn btn-primary">Создать инцидент</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="deleteModal" class="modal hidden">
+            <div class="modal-content small">
+                <div class="modal-header">
+                    <h3>Подтвердить удаление</h3>
+                    <button id="closeDeleteModal" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите удалить этот инцидент? Это действие нельзя будет отменить.</p>
+                    <div class="modal-footer">
+                        <button type="button" id="cancelDeleteBtn" class="btn btn-secondary">Отмена</button>
+                        <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Удалить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/incident-script.js?v=1.2"></script>
+</body>
+</html>

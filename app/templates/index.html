@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Чат-бот</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css?v=1.2">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Тестовый чат-бот 🤖</h1>
+            <h2>В данный момент сервис активно дорабатывается...</h2>
+            <p>Этот бот может подсказать любую интересующую вас информацию о Bank 🫶🏻</p>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="question" placeholder="Задайте свой вопрос..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Отправить</button>
+        </div>
+
+        <div id="thinking" class="thinking">
+            Думаю...
+        </div>
+        
+        <div class="stats">
+            <h3>Текущая сессия</h3>
+            <p>Сообщений отправлено: <span id="messageCount">0</span></p>
+            <p>Длительность сессии: <span id="sessionTime">0:00</span></p>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js?v=1.2"></script>
+</body>
+</html>
